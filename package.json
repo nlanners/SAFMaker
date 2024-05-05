@@ -1,0 +1,28 @@
+{
+  "name": "safmaker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlanners/SAFMaker.git"
+  },
+  "bin": {
+    "safmaker": "./bin/index.js"
+  },
+  "type": "module",
+  "author": "Nick Lanners",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nlanners/SAFMaker/issues"
+  },
+  "homepage": "https://github.com/nlanners/SAFMaker#readme",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "csv-parser": "^3.0.0",
+    "prettier": "^3.2.5"
+  }   
+}
