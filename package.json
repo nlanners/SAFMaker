@@ -23,6 +23,7 @@
   "dependencies": {
     "commander": "^12.0.0",
     "csv-parser": "^3.0.0",
-    "prettier": "^3.2.5"
-  }   
+    "prettier": "^3.2.5",
+    "strip-bom-stream": "^5.0.0"
+  }
 }

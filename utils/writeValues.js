@@ -1,17 +1,12 @@
-export const writeValues = (row) => {
-  const values = [];
-  const headings = Object.keys(row).map(heading => heading !== 'filename' ? heading : null);
+export const writeValues = row => {
+  const headings = Object.keys(row).filter(heading => heading !== 'filename');
 
-
-  headings.forEach(heading => {
-    if (!heading) {
-      return;
-    }
+  const values = headings.map(heading => {
     const headingParts = heading.split('.');
     if (row[heading]) {
-      values.push(`<dcvalue element="${headingParts[1]}"${headingParts.length > 2 ? ` qualifier="${headingParts[2]}"` : ''}>${row[heading]}</dcvalue>`);
+      return `<dcvalue element="${headingParts[1]}"${headingParts.length > 2 ? ` qualifier="${headingParts[2]}"` : ''}>${row[heading]}</dcvalue>`;
     }
   });
 
   return values.join('');
-}
+};
