@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export const findCsvFile = (startPath, filter) => {
+export const findCsvFile = (startPath: string, filter) => {
   if (!fs.existsSync(startPath)) {
     console.log('no dir ', startPath);
     return;

@@ -1,10 +1,10 @@
-import fs from 'fs';
 import csv from 'csv-parser';
-import { findCsvFile } from '../utils/findCsvFile.js';
-import { createMetadataFolders } from '../utils/createMetadataFolders.js';
+import fs from 'fs';
 import stripBom from 'strip-bom-stream';
+import { createMetadataFolders } from '../utils/createMetadataFolders.js';
+import { findCsvFile } from '../utils/findCsvFile.js';
 
-export const main = argv => {
+export const main = (argv: string[]) => {
   const folder = argv;
   const rows = [];
   const csvFileName = findCsvFile(folder, '.csv');
@@ -12,7 +12,7 @@ export const main = argv => {
   fs.createReadStream(`${folder}/${csvFileName}`)
     .pipe(stripBom())
     .pipe(csv())
-    .on('data', data => rows.push(data))
+    .on('data', (data) => rows.push(data))
     .on('end', () => {
       createMetadataFolders(rows, folder);
     });
