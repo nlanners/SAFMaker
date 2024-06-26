@@ -9,9 +9,7 @@ export const movePDF = (fileName: string, srcDir: string, destDir: string) => {
 
     if (file.endsWith(fileName)) {
       const newDest = `${destDir}/${fileName}`;
-      fs.copyFileSync(filePath, newDest, 0, (err) => {
-        console.log(err);
-      });
+      fs.copyFileSync(filePath, newDest, 0);
     }
   });
 };

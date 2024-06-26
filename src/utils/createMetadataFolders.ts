@@ -1,11 +1,12 @@
 import fs from 'fs';
 import { writeXML } from './writeXML.js';
 import { movePDF } from './movePDF.js';
+import type { ISAFRow } from 'src/types/ISAFRow.js';
 
-export const createMetadataFolders = (rows, folderName) => {
+export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
   const SAFFolder = `${folderName}-SAF`;
   if (fs.existsSync(SAFFolder)) {
-    fs.rmSync(SAFFolder, { recursive: true }, () => {});
+    fs.rmSync(SAFFolder, { recursive: true });
   }
   fs.mkdirSync(SAFFolder);
 
