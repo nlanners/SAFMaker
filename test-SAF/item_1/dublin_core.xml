@@ -1,0 +1,6 @@
+
+    <?xml version="1.0" encoding="UTF-8"?>
+      <dublin_core>
+      <dcvalue element="author">John Doe</dcvalue><dcvalue element="title">Test Document</dcvalue><dcvalue element="date" qualifier="issued">2019-01-01</dcvalue>
+      </dublin_core>
+  

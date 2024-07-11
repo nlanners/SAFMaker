@@ -2,6 +2,7 @@ import fs from 'fs';
 import { writeXML } from './writeXML.js';
 import { movePDF } from './movePDF.js';
 import type { ISAFRow } from 'src/types/ISAFRow.js';
+import chalk from 'chalk';
 
 export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
   const SAFFolder = `${folderName}-SAF`;
@@ -20,9 +21,11 @@ export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
     });
     console.log('Metadata folders created successfully.');
   } catch (err) {
-    console.error(err);
+    console.log(chalk.red(err));
     fs.rm(SAFFolder, { recursive: true }, () => {
-      console.log('Error creating metadata folders. Process aborted.');
+      console.log(
+        chalk.red('Error creating metadata folders. Process aborted.')
+      );
     });
   }
 };
