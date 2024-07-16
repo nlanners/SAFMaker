@@ -1,15 +1,13 @@
+import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 
 export const movePDF = (fileName: string, srcDir: string, destDir: string) => {
-  const files = fs.readdirSync(srcDir);
-
-  files.forEach((file) => {
-    const filePath = path.join(srcDir, file);
-
-    if (file.endsWith(fileName)) {
-      const newDest = `${destDir}/${fileName}`;
-      fs.copyFileSync(filePath, newDest, 0);
-    }
-  });
+  const filePath = path.join(srcDir, fileName);
+  if (fs.existsSync(filePath)) {
+    const newDest = `${destDir}/${fileName}`;
+    fs.copyFileSync(filePath, newDest, 0);
+    return { successful: fileName, missing: null };
+  }
+  return { successful: null, missing: fileName };
 };

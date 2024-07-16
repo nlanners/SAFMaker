@@ -5,24 +5,55 @@ import type { ISAFRow } from 'src/types/ISAFRow.js';
 import chalk from 'chalk';
 
 export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
-  const SAFFolder = `${folderName}-SAF`;
-  if (fs.existsSync(SAFFolder)) {
-    fs.rmSync(SAFFolder, { recursive: true });
+  const SAFFolderName = `${folderName}-SAF`;
+  if (fs.existsSync(SAFFolderName)) {
+    fs.rmSync(SAFFolderName, { recursive: true });
   }
-  fs.mkdirSync(SAFFolder);
+  fs.mkdirSync(SAFFolderName);
+
+  const files = fs.readdirSync(folderName);
+  const pdfFileNames = files.filter((file) => file.endsWith('.pdf'));
 
   try {
+    const movedFiles: string[] = [];
+    const missingFiles: string[] = [];
+
     rows.forEach((row, index) => {
-      const itemFolder = `${SAFFolder}/item_${index + 1}`;
+      const itemFolder = `${SAFFolderName}/item_${index + 1}`;
       fs.mkdirSync(itemFolder);
       fs.writeFileSync(`${itemFolder}/contents`, row.filename);
       fs.writeFileSync(`${itemFolder}/dublin_core.xml`, writeXML(row));
-      movePDF(row.filename, folderName, itemFolder);
+      const { successful, missing } = movePDF(
+        row.filename,
+        folderName,
+        itemFolder
+      );
+      if (successful) {
+        movedFiles.push(successful);
+      }
+      if (missing) {
+        missingFiles.push(missing);
+      }
     });
+
+    const extraFiles = pdfFileNames.filter(
+      (file) => !movedFiles.includes(file)
+    );
+
+    if (extraFiles.length) {
+      console.log(chalk.yellow('Extra files found in folder:'));
+      extraFiles.forEach(file =>console.log(chalk.yellow(file)))
+    }
+
+    if (missingFiles.length) {
+      console.log(chalk.red('The following files were not found:'));
+      missingFiles.forEach(file => console.log(chalk.red(file)));
+    }
+
     console.log('Metadata folders created successfully.');
   } catch (err) {
     console.log(chalk.red(err));
-    fs.rm(SAFFolder, { recursive: true }, () => {
+    fs.rm(SAFFolderName, { recursive: true }, () => {
       console.log(
         chalk.red('Error creating metadata folders. Process aborted.')
       );
