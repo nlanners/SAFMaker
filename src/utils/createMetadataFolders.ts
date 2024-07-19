@@ -3,8 +3,11 @@ import { writeXML } from './writeXML.js';
 import { movePDF } from './movePDF.js';
 import type { ISAFRow } from 'src/types/ISAFRow.js';
 import chalk from 'chalk';
+import { Presets, SingleBar } from 'cli-progress';
 
 export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
+  const progressBar = new SingleBar({}, Presets.shades_classic);
+
   const SAFFolderName = `${folderName}-SAF`;
   if (fs.existsSync(SAFFolderName)) {
     fs.rmSync(SAFFolderName, { recursive: true });
@@ -17,7 +20,7 @@ export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
   try {
     const movedFiles: string[] = [];
     const missingFiles: string[] = [];
-
+    progressBar.start(rows.length, 0);
     rows.forEach((row, index) => {
       const itemFolder = `${SAFFolderName}/item_${index + 1}`;
       fs.mkdirSync(itemFolder);
@@ -34,7 +37,10 @@ export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
       if (missing) {
         missingFiles.push(missing);
       }
+
+      progressBar.increment();
     });
+    progressBar.stop();
 
     const extraFiles = pdfFileNames.filter(
       (file) => !movedFiles.includes(file)
@@ -42,12 +48,12 @@ export const createMetadataFolders = (rows: ISAFRow[], folderName: string) => {
 
     if (extraFiles.length) {
       console.log(chalk.yellow('Extra files found in folder:'));
-      extraFiles.forEach(file =>console.log(chalk.yellow(file)))
+      extraFiles.forEach((file) => console.log(chalk.yellow(file)));
     }
 
     if (missingFiles.length) {
       console.log(chalk.red('The following files were not found:'));
-      missingFiles.forEach(file => console.log(chalk.red(file)));
+      missingFiles.forEach((file) => console.log(chalk.red(file)));
     }
 
     console.log('Metadata folders created successfully.');

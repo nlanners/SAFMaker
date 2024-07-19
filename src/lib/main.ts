@@ -19,7 +19,11 @@ export const main = (argv: string) => {
   fs.createReadStream(`${folder}/${csvFileName}`)
     .pipe(stripBom())
     .pipe(csv())
-    .on('data', (data) => rows.push(data))
+    .on('data', (data) => {
+      if (Object.values(data).length > 0) {
+        rows.push(data);
+      }
+    })
     .on('end', () => {
       if (rows.length === 0) {
         console.log(chalk.yellow('No rows found in CSV file'));
