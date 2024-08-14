@@ -6,7 +6,7 @@ import { main } from '../lib/main.js';
 const program = new Command();
 
 program
-  .version('1.0.0')
+  .version('2.0.0')
   .argument(
     '<string>',
     'folder containing items to convert to Simple Archive Format'
